@@ -22,7 +22,7 @@ export function parseValue(val) {
   return [qty, units];
 }
 
-export function parseDiff(expected) {
+export function parseObj(expected) {
   const difference = Object.assign({}, expected);
   Object.keys(difference).forEach((key) => {
     [difference[key]] = parseValue(difference[key]);

@@ -1,18 +1,9 @@
 import {
-  isAlignedWith, isPositioned, dimensionRelativeTo, isInside, getParent,
+  isAlignedWith, isPositioned, dimensionRelativeTo, isInside,
 } from './commands-helpers';
 
-const undefinedLength = () => {
-  throw new Error('Please enter a distance');
-};
-
-const undefinedElement = () => {
-  throw new Error('Please enter an element to compare');
-};
-
-const undefinedObject = () => {
-  throw new Error('Please enter the dimensions you want to compare, e.g. { top: \'20px\', left: \'20px\' }');
-};
+import { getParent } from './utils';
+import { undefinedLength, undefinedElement, undefinedObject } from './err';
 
 Cypress.Commands.add('isLeftAlignedWith', { prevSubject: true }, (subject, element = undefinedElement()) => isAlignedWith(subject, element, 'left').then(subj => subj));
 
