@@ -25,9 +25,7 @@ export function parseValue(val) {
 export function parseDiff(expected) {
   const difference = Object.assign({}, expected);
   Object.keys(difference).forEach((key) => {
-    // eslint-disable-next-line prefer-destructuring
-    console.log(difference[key]);
-    difference[key] = parseValue(difference[key])[0];
+    [difference[key]] = parseValue(difference[key]);
   });
   return difference;
 }
