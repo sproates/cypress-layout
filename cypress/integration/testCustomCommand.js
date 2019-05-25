@@ -1,5 +1,5 @@
-import { el } from '../support/index';
-import { testPage } from '../support/testPage';
+import el from '../support/elements';
+import testPage from '../support/testPage';
 
 describe('testing custom commands', () => {
   before(() => {
@@ -8,6 +8,7 @@ describe('testing custom commands', () => {
 
   it('tests that assertios can be chained', () => {
     cy.document().then((doc) => {
+      // eslint-disable-next-line no-param-reassign
       doc.body.innerHTML = testPage;
     });
     cy.get(el.midMiddleInner)
