@@ -1,4 +1,4 @@
-export const testPage = `
+export default `
 <div class="one"></div>
 <div class="two"></div>
 <div class="three"></div>
@@ -63,5 +63,4 @@ export const testPage = `
   .eighteen { top: 1100px; left: 1100px; }
   }
 </style>
-`
-;
+`;

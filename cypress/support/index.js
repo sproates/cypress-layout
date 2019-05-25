@@ -1,42 +1,32 @@
-// ***********************************************************
-// This example support/index.js is processed and
-// loaded automatically before your test files.
-//
-// This is a great place to put global configuration and
-// behavior that modifies Cypress.
-//
-// You can change the location of this file or turn off
-// automatically serving support files with the
-// 'supportFile' configuration option.
-//
-// You can read more here:
-// https://on.cypress.io/configuration
-// ***********************************************************
+import {
+  isAlignedWith, isPositioned, dimensionRelativeTo, isInside,
+} from './compare';
+import { undefinedLength, undefinedElement, undefinedObject } from './err';
 
-// Import commands.js using ES2015 syntax:
-import './commands';
+Cypress.Commands.add('isLeftAlignedWith', { prevSubject: true }, (subject, element = undefinedElement()) => isAlignedWith(subject, element, 'left').then(subj => subj));
 
-// Alternatively you can use CommonJS syntax:
-// require('./commands')
+Cypress.Commands.add('isRightAlignedWith', { prevSubject: true }, (subject, element = undefinedElement()) => isAlignedWith(subject, element, 'right').then(subj => subj));
 
-export const el = {
-  document: '&document',
-  topLeftOuter: '.one',
-  topLeftInner: '.ten',
-  topMiddleOuter: '.two',
-  topMiddleInner: '.eleven',
-  topRightOuter: '.three',
-  topRightInner: '.twelve',
-  midLeftOuter: '.four',
-  midLeftInner: '.thirteen',
-  midMiddleOuter: '.five',
-  midMiddleInner: '.fourteen',
-  midRightOuter: '.six',
-  midRightInner: '.fifteen',
-  bottomLeftOuter: '.seven',
-  bottomLeftInner: '.sixteen',
-  bottomMiddleOuter: '.eight',
-  bottomMiddleInner: '.seventeen',
-  bottomRightOuter: '.nine',
-  bottomRightOuter: '.eighteen',
-};
+Cypress.Commands.add('isTopAlignedWith', { prevSubject: true }, (subject, element = undefinedElement()) => isAlignedWith(subject, element, 'top').then(subj => subj));
+
+Cypress.Commands.add('isBottomAlignedWith', { prevSubject: true }, (subject, element = undefinedElement()) => isAlignedWith(subject, element, 'bottom').then(subj => subj));
+
+Cypress.Commands.add('isBelow', { prevSubject: true }, (subject, element = undefinedElement(), length = undefinedLength()) => isPositioned(subject, 'below', element, length).then(subj => subj));
+
+Cypress.Commands.add('isAbove', { prevSubject: true }, (subject, element = undefinedElement(), length = undefinedLength()) => isPositioned(subject, 'above', element, length).then(subj => subj));
+
+Cypress.Commands.add('isLeftOf', { prevSubject: true }, (subject, element = undefinedElement(), length = undefinedLength()) => isPositioned(subject, 'left of', element, length).then(subj => subj));
+
+Cypress.Commands.add('isRightOf', { prevSubject: true }, (subject, element = undefinedElement(), length = undefinedLength()) => isPositioned(subject, 'right of', element, length).then(subj => subj));
+
+Cypress.Commands.add('hasWidthOf', { prevSubject: true }, (subject, length = undefinedLength(), relativeTo) => dimensionRelativeTo(subject, 'width', relativeTo, length).then(subj => subj));
+
+Cypress.Commands.add('hasHeightOf', { prevSubject: true }, (subject, length = undefinedLength(), relativeTo) => dimensionRelativeTo(subject, 'height', relativeTo, length).then(subj => subj));
+
+Cypress.Commands.add('isInside', { prevSubject: true }, (subject, element = undefinedElement(), expected = undefinedObject()) => {
+  isInside(subject, element, expected).then(subj => subj);
+});
+
+Cypress.Commands.add('waitFor', { prevSubject: false }, (element = undefinedElement()) => {
+  cy.get(element);
+});

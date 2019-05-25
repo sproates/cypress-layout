@@ -14,11 +14,11 @@ export function getPositionEdges(direction) {
 }
 
 export function getKeyByValue(object, value) {
-  const key = Object.keys(object).find(key => object[key] === value);
-  if (!key) {
+  const returnKey = Object.keys(object).find(key => object[key] === value);
+  if (!returnKey) {
     return value;
   }
-  return key;
+  return returnKey;
 }
 
 export function signSubtract(minuend, subtrahend, sign = false) {
