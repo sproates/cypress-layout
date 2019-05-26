@@ -3,13 +3,45 @@ import {
 } from './lib/compare';
 import { undefinedLength, undefinedElement, undefinedObject } from './lib/err';
 
-Cypress.Commands.add('isLeftAlignedWith', { prevSubject: true }, (subject, element = undefinedElement()) => isAlignedWith(subject, element, 'left').then(subj => subj));
+Cypress.Commands.add('isLeftAlignedWith', { prevSubject: true }, (subject, element = undefinedElement()) => isAlignedWith(subject, element, 'left').then((res) => {
+  expect(res[0], res[1]).to.equal(true);
+  return subject;
+}));
 
-Cypress.Commands.add('isRightAlignedWith', { prevSubject: true }, (subject, element = undefinedElement()) => isAlignedWith(subject, element, 'right').then(subj => subj));
+Cypress.Commands.add('isRightAlignedWith', { prevSubject: true }, (subject, element = undefinedElement()) => isAlignedWith(subject, element, 'right').then((res) => {
+  expect(res[0], res[1]).to.equal(true);
+  return subject;
+}));
 
-Cypress.Commands.add('isTopAlignedWith', { prevSubject: true }, (subject, element = undefinedElement()) => isAlignedWith(subject, element, 'top').then(subj => subj));
+Cypress.Commands.add('isTopAlignedWith', { prevSubject: true }, (subject, element = undefinedElement()) => isAlignedWith(subject, element, 'top').then((subj) => {
+  expect(subj[0], subj[1]).to.equal(true);
+  return subject;
+}));
 
-Cypress.Commands.add('isBottomAlignedWith', { prevSubject: true }, (subject, element = undefinedElement()) => isAlignedWith(subject, element, 'bottom').then(subj => subj));
+Cypress.Commands.add('isBottomAlignedWith', { prevSubject: true }, (subject, element = undefinedElement()) => isAlignedWith(subject, element, 'bottom').then((subj) => {
+  expect(subj[0], subj[1]).to.equal(true);
+  return subject;
+}));
+
+Cypress.Commands.add('isNotLeftAlignedWith', { prevSubject: true }, (subject, element = undefinedElement()) => isAlignedWith(subject, element, 'left').then((res) => {
+  expect(res[0], res[1]).to.equal(false);
+  return subject;
+}));
+
+Cypress.Commands.add('isNotRightAlignedWith', { prevSubject: true }, (subject, element = undefinedElement()) => isAlignedWith(subject, element, 'right').then((res) => {
+  expect(res[0], res[1]).to.equal(false);
+  return subject;
+}));
+
+Cypress.Commands.add('isNotTopAlignedWith', { prevSubject: true }, (subject, element = undefinedElement()) => isAlignedWith(subject, element, 'top').then((subj) => {
+  expect(subj[0], subj[1]).to.equal(false);
+  return subject;
+}));
+
+Cypress.Commands.add('isNotBottomAlignedWith', { prevSubject: true }, (subject, element = undefinedElement()) => isAlignedWith(subject, element, 'bottom').then((subj) => {
+  expect(subj[0], subj[1]).to.equal(false);
+  return subject;
+}));
 
 Cypress.Commands.add('isBelow', { prevSubject: true }, (subject, element = undefinedElement(), length = undefinedLength()) => isPositioned(subject, 'below', element, length).then(subj => subj));
 
