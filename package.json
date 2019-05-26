@@ -1,6 +1,9 @@
 {
   "name": "cypress-layout",
-  "version": "0.0.1",
+  "version": "0.0.2",
+  "files": [
+    "index.js"
+  ],
   "description": "Verifies the position of HTML elements on your page, for use with cypress.io.",
   "main": "index.js",
   "scripts": {
@@ -28,5 +31,8 @@
     "eslint-config-airbnb-base": "^13.1.0",
     "eslint-plugin-cypress": "^2.2.1",
     "eslint-plugin-import": "^2.17.2"
+  },
+  "dependencies": {
+    "deep-equal": "^1.0.1"
   }
 }
