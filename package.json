@@ -1,6 +1,6 @@
 {
   "name": "cypress-layout",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "Verifies the position of HTML elements on your page, for use with cypress.io.",
   "main": "index.js",
   "scripts": {
