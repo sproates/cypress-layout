@@ -12,14 +12,18 @@ You only need to have [Cypress.io](https://github.com/cypress-io/cypress) instal
 ### Installing
 
 In your command line interface (CLI) navigate to your project and run:
+
 ```
 npm install cypress-layout
 ```
+
 Once installed update `Cypress/support/index.js` file to include:
 ```javascript
 import 'cypress-layout'
 ```
+
 Optionally, but recommended, you can add `config.roundLayoutValues = true` to `Cypress/plugins/index.js`:
+
 ```javascript
 module.exports = (on, config) => {
   // `on` is used to hook into various events Cypress emits
@@ -28,12 +32,17 @@ module.exports = (on, config) => {
   return config
 }
 ```
+
+Dealing with fractions of pixels is like playing on Hard mode. This setting rounds all `px` values to the nearest whole number.
+
 ## Getting started
 
 If you're new to either Cypress or Mocha check out the Getting Started section on the wiki. If you're comfortable with both then you can probably dive straight in and have a look at the commands below. The code snippets and examples relate to a BBC News article (e.g. https://www.bbc.co.uk/news/articles/ce9992y0reyo).
 
 ### Selectors
 
+Firdtly
+Secondly
 To help make the tests more readable, we define the selectors we want to use in our tests in a separate bit of code outside the tests themselves. This means that instead of seeing `#root > main > div > div:nth-child(2) > time` in the test we see something ike `el.timestamp`. The list of selectors is stored in `support/index.js`. The initial list is at the top of the file and looks like this:
 
 ```javascript
