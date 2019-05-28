@@ -60,7 +60,9 @@ export const el = {
 }
 ```
 
-The first word in this declaration is `export`. This makes it available to be picked up by other files. Every test file we create in the `integration/'` folder should start with `import { el } from '../support/index'` on the first line. This makes the names to use throughout our tests consistent. If you want to use a different file, just create the file with a `.js` extension and change the `import` statement to be `import { el } from '../support/[YOUR-FILENAME-HERE'`.
+The first word in this declaration is `export`. This makes it available to be picked up by other files. Every test file we create in the `integration/'` folder should start with `import { el } from '../support/index'` on the first line. This makes the names to use throughout our tests consistent.
+
+If you want to use a different file, just create the file with a `.js` extension and change the `import` statement to be `import { el } from '../support/[YOUR-FILENAME-HERE'`.
 
 #### The 'viewport'
 
@@ -68,7 +70,7 @@ The viewport is a special object, it represents the boundaries of the page. It's
 
 ### The commands
 
-All the commands that check positioning should be 'chained' off a `cy.get` command.
+All the commands that check positioning should be 'chained' from a `cy.get` command.
 
 ```javascript
 cy.get(el.headline).isBelow(el.header, '0px');
@@ -79,7 +81,7 @@ Commands can be chained together, for convenience:
 ```javascript
 cy.get(el.headline).isBelow(el.header, '0px').isLeftAlignedWith(el.headline);
 
-// Or, for better readability you could do the following - just be aware of the position of the ending semicolon:
+// Or, for better readability you could do the following - just make sure the semi-colon comes at the end of the whole list, rather than at the end of each line:
 
 cy.get(el.headline)
   .isBelow(el.header, '0px')
@@ -99,7 +101,7 @@ And that's basically it. Below you can find a reference of all the commands avai
 
 ### A word of warning
 
-Because of the way Cypress works, if you want to work with elements that are added to page after it loads there is a `waitFor()` command. A good example of this is the cookie banner on the article page, the following test will fail:
+Because of the way Cypress works, if you want to work with elements that are added to page after it loads you need to `cy.get` it before attempting any layout checks. A good example of this is the cookie banner on the article page https://www.bbc.co.uk/news/articles/ce9992y0reyo, the following test will fail:
 
 ```javascript
 it('tests the header', () => {
@@ -112,7 +114,7 @@ This is because the x, y co-ordinates of the header *and* the cookieBanner are `
 
 ```javascript
 it('tests the header', () => {
-  cy.waitFor(el.cookieBanner)
+  cy.get(el.cookieBanner)
   cy.get(el.header)
     .isBelow(el.cookieBanner, '0px')
 });
