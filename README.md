@@ -81,7 +81,7 @@ Commands can be chained together, for convenience:
 ```javascript
 cy.get(el.headline).isBelow(el.header, '0px').isLeftAlignedWith(el.headline);
 
-// Or, for better readability you could do the following - just make sure the semi-colon comes at the end of the whole list, rather than at the end of each line:
+// Or, for better readability you could do the following
 
 cy.get(el.headline)
   .isBelow(el.header, '0px')
