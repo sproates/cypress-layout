@@ -30,3 +30,12 @@ describe('testing custom commands', () => {
       .isInside('&document', { top: '0px', left: '0px' });
   });
 });
+
+describe('Postcode tests', () => {
+  it('should render content for all postcodes', () => {
+    cy.visit('https://www.bbc.co.uk/news/articles/ce9992y0reyo');
+    cy.get('h1')
+      .isBelow('header', '0px')
+      .isLeftAlignedWith('time');
+  });
+});
