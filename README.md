@@ -51,7 +51,7 @@ export const el = {
 
 We'll come to the `viewport` object later on. To add a new element to use in a test you need to enter a new line in the format `elementName: 'css selector as a string',` (don't forget the comma). The element name has to be one word, followed by a colon, followed by the element selector as a `string`.
 
-Here's an example of adding the article header from https://www.bbc.co.uk/news/articles/ce9992y0reyo:
+Here's an example of adding the article header::
 
 ```javascript
 export const el = {
@@ -114,16 +114,44 @@ This is because the x, y co-ordinates of the header *and* the cookieBanner are `
 
 ```javascript
 it('tests the header', () => {
-  cy.get(el.cookieBanner)
+  cy.get(el.cookieBanner) // This needs to be called first
   cy.get(el.header)
     .isBelow(el.cookieBanner, '0px')
 });
 ```
 
-## Alignment
+## Quick reference
 
-##
+Below is a list of the commands you can use, for more indepth information about each command please check the wiki.
 
-## Contributing
+### Alignment
 
+```javascript
+cy.get(el.element)
+  .isLeftAlignedWith(el.element);
+  .isRightAlignedWith(el.element);
+  .isTopAlignedWith(el.element);
+  .isBottomAlignedWith(el.element);
 
+cy.get(el.element)
+  .isNotLeftAlignedWith(el.element);
+  .isNotRightAlignedWith(el.element);
+  .isNotTopAlignedWith(el.element);
+  .isNotBottomAlignedWith(el.element);
+```
+
+### Positioning
+
+```javascript
+cy.get(el.element)
+  .isAbove(el.element);
+  .isBelow(el.element);
+  .isLeftOf(el.element);
+  .isRightOf(el.element);
+  
+cy.get(el.element)
+  .isNotAbove(el.element);
+  .isNotBelow(el.element);
+  .isNotLeftOf(el.element);
+  .isNotRightOf(el.element);
+```
