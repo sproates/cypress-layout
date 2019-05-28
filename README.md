@@ -35,7 +35,7 @@ module.exports = (on, config) => {
 
 Dealing with fractions of pixels is like playing on Hard mode. This setting rounds all `px` values to the nearest whole number.
 
-## Getting started
+### Getting started
 
 If you're new to either Cypress or Mocha check out the Getting Started section on the wiki. If you're comfortable with both then you can probably dive straight in and have a look at the commands below. The code snippets and examples relate to a BBC News article (e.g. https://www.bbc.co.uk/news/articles/ce9992y0reyo).
 
