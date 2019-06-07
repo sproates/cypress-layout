@@ -14,6 +14,7 @@ describe('testing custom commands', () => {
     });
     cy.get(el.midMiddleInner)
       .is().leftAlignedWith(el.topMiddleInner)
+      .should('be.visible')
       .is().rightAlignedWith(el.topMiddleInner)
       .is().topAlignedWith('.thirteen')
       .is().bottomAlignedWith('.thirteen')
@@ -23,21 +24,12 @@ describe('testing custom commands', () => {
       .is().rightOf(el.midLeftInner, '300px')
       .has().widthOf('50%')
       .has().heightOf('200px')
-      .doesNotHave().heightOf('20px')
+      .hasnot().heightOf('20px')
       .has().inside('.five', {
         top: '100px', left: '100px', bottom: '100px', right: '100px',
       });
 
     cy.get(el.topLeftOuter)
       .is().inside('&document', { top: '0px', left: '0px' });
-  });
-});
-
-describe('Postcode tests', () => {
-  it('should render content for all postcodes', () => {
-    cy.visit('https://www.bbc.co.uk/news/articles/ce9992y0reyo');
-    cy.get('h1');
-    // .isBelow('header', '0px')
-    // .isLeftAlignedWith('time');
   });
 });

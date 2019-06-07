@@ -73,27 +73,27 @@ The viewport is a special object, it represents the boundaries of the page. It's
 All the commands that check positioning should be 'chained' from a `cy.get` command.
 
 ```javascript
-cy.get(el.headline).isBelow(el.header, '0px');
+cy.get(el.headline).is().below(el.header, '0px');
 ```
 
 Commands can be chained together, for convenience: 
 
 ```javascript
-cy.get(el.headline).isBelow(el.header, '0px').isLeftAlignedWith(el.headline);
+cy.get(el.headline).is().below(el.header, '0px').is().leftAlignedWith(el.headline);
 
 // Or, for better readability you could do the following
 
 cy.get(el.headline)
-  .isBelow(el.header, '0px')
-  .isLeftAlignedWith(el.headline);
+  .is().below(el.header, '0px')
+  .is().leftAlignedWith(el.headline);
 ```
 
 You can also chain normal Cypress commands from them:
 
 ```javascript
 cy.get(el.headline)
-  .isBelow(el.header, '0px')
-  .isLeftAlignedWith(el.headline)
+  .is().below(el.header, '0px')
+  .is().leftAlignedWith(el.headline)
   .should('contain', '\'Breech\' baby scan would save lives');
 ```
 
