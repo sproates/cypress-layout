@@ -65,3 +65,4 @@ typings/
 
 #cypress
 cypress/videos/
+cypress/screenshots/

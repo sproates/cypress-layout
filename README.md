@@ -17,7 +17,7 @@ In your command line interface (CLI) navigate to your project and run:
 npm install cypress-layout
 ```
 
-Once installed update `Cypress/support/index.js` file to include:
+Once installed update `cypress/support/index.js` file to include:
 ```javascript
 import 'cypress-layout'
 ```
@@ -37,36 +37,19 @@ Dealing with fractions of pixels is like playing on Hard mode. This setting roun
 
 ### Getting started
 
-If you're new to either Cypress or Mocha check out the Getting Started section on the wiki. If you're comfortable with both then you can probably dive straight in and have a look at the commands below. The code snippets and examples relate to a BBC News article (e.g. https://www.bbc.co.uk/news/articles/ce9992y0reyo).
+The code snippets and examples relate to a BBC News article (e.g. https://www.bbc.co.uk/news/articles/c8xxl4l3dzeo).
 
-### Selectors
-
-To help make the tests more readable you can define the selectors we want to use in our tests in a separate bit of code outside the tests themselves. This means that instead of seeing `#root > main > div > div:nth-child(2) > time` in the test we see something ike `el.timestamp`. to get started, paste the following into `support/index.js`:
+To get started paste the following into a new file in `cypress/integration`:
 
 ```javascript
-export const el = {
-  viewport: 'viewport'
-}
+describe('Getting started with cypress-layout', () => {
+  it('gets started', () => {
+    cy.viewport(1680, 1050);
+    cy.visit('https://www.bbc.co.uk/news/articles/c8xxl4l3dzeo');
+    cy.get('figure img').is().leftAlignedWith('h1');
+  });
+});
 ```
-
-We'll come to the `viewport` object later on. To add a new element to use in a test you need to enter a new line in the format `elementName: 'css selector as a string',` (don't forget the comma). The element name has to be one word, followed by a colon, followed by the element selector as a `string`.
-
-Here's an example of adding the article header::
-
-```javascript
-export const el = {
-  viewport: 'viewport',
-  header: 'header',
-}
-```
-
-The first word in this declaration is `export`. This makes it available to be picked up by other files. Every test file we create in the `integration/'` folder should start with `import { el } from '../support/index'` on the first line. This makes the names to use throughout our tests consistent.
-
-If you want to use a different file, just create the file with a `.js` extension and change the `import` statement to be `import { el } from '../support/[YOUR-FILENAME-HERE'`.
-
-#### The 'viewport'
-
-The viewport is a special object, it represents the boundaries of the page. It's useful, for example, when testing that the header is the first element on the page and the footer is the very last.
 
 ### The commands
 
@@ -99,9 +82,9 @@ cy.get(el.headline)
 
 And that's basically it. Below you can find a reference of all the commands available to you.
 
-### A word of warning
+### Just a head's up!
 
-Because of the way Cypress works, if you want to work with elements that are added to page after it loads you need to `cy.get` it before attempting any layout checks. A good example of this is the cookie banner on the article page https://www.bbc.co.uk/news/articles/ce9992y0reyo, the following test will fail:
+If you want to work with elements that are added to page after it loads you need to `cy.get` it before attempting any layout checks. A good example of this is the cookie banner on the article page https://www.bbc.co.uk/news/articles/ce9992y0reyo, the following test will fail:
 
 ```javascript
 it('tests the header', () => {
@@ -120,38 +103,79 @@ it('tests the header', () => {
 });
 ```
 
-## Quick reference
+### Selectors
 
-Below is a list of the commands you can use, for more indepth information about each command please check the wiki.
+To help make the tests more readable you can define the selectors we want to use in a separate object outside the tests themselves. This means that instead of seeing `#root > main > div > div:nth-child(2) > time` in the test we see something ike `el.timestamp`. To get started, paste the following into the new file in `cypress/support/` e.g. `cypress/support/elements.js`:
+
+```javascript
+export const el = {
+  document: '&document'
+}
+```
+
+We'll come to the `&document` object later on. To add a new element to use in a test you need to enter a new line in the format `elementName: 'css selector as a string',` (don't forget the comma).
+
+Here's an example of adding the first few elements we want to check:
+
+```javascript
+// I'll admit the benefits of these are marginal at best - but you get the idea!
+export const el = {
+  document: '&document',
+  header: 'header',
+  headline: 'h1',
+  img: 'figure img',
+}
+```
+
+The first word in this declaration is `export`. This makes it available to be picked up by other files. Every test file we create in the `integration/'` folder should start with `import { el } from '../support/elements'` on the first line. This makes the names to use throughout our tests consistent.
+
+If you want to use a different file, just create the file with a `.js` extension and change the `import` statement to be `import { el } from '../support/[YOUR-FILENAME-HERE]'`.
+
+#### The '&document'
+
+The `&document` is a special element, it represents the boundaries of the page. It's useful, for example, when testing that the header is the very first element on the page and the footer is the very last.
+
+## The full list of commands
+
+Below is a list of the commands you can use.
+
+### is(), isnot(), has(), hasnot()
+
+You need to prefix every layout command with either `is()`, `isnot()`, `has()` or `hasnot()`.
 
 ### Alignment
 
 ```javascript
 cy.get(el.element)
-  .isLeftAlignedWith(el.element);
-  .isRightAlignedWith(el.element);
-  .isTopAlignedWith(el.element);
-  .isBottomAlignedWith(el.element);
-
-cy.get(el.element)
-  .isNotLeftAlignedWith(el.element);
-  .isNotRightAlignedWith(el.element);
-  .isNotTopAlignedWith(el.element);
-  .isNotBottomAlignedWith(el.element);
+  .is().leftAlignedWith(el.otherElement);
+  .is().rightAlignedWith(el.otherElement);
+  .is().topAlignedWith(el.otherElement);
+  .is().bottomAlignedWith(el.otherElement);
 ```
 
 ### Positioning
 
 ```javascript
 cy.get(el.element)
-  .isAbove(el.element);
-  .isBelow(el.element);
-  .isLeftOf(el.element);
-  .isRightOf(el.element);
-  
+  .is().above(el.otherElement, '20px');
+  .is().below(el.otherElement, '20px');
+  .is().leftOf(el.otherElement, '20px');
+  .is().rightOf(el.otherElement, '20px');
+```
+
+### Size
+
+```javascript
 cy.get(el.element)
-  .isNotAbove(el.element);
-  .isNotBelow(el.element);
-  .isNotLeftOf(el.element);
-  .isNotRightOf(el.element);
+  .has().widthOf('20px');
+  .has().widthOf('50%', el.otherElement);
+  .has().heightOf('20px');
+  .has().heightOf('50%', el.otherElement);
+```
+
+### Inside
+
+```javascript
+cy.get(el.element)
+  is().inside(el.otherElement, { top: '20px', bottom: : '20px', left: '20px', right: '20px' });
 ```
