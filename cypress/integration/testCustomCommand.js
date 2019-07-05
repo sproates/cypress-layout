@@ -18,7 +18,7 @@ describe('testing custom commands', () => {
       .is().rightAlignedWith(el.topMiddleInner)
       .is().topAlignedWith('.thirteen')
       .is().bottomAlignedWith('.thirteen')
-      .is().below(el.topMiddleInner, 300)
+      .is().below(el.topMiddleInner, '300px')
       .is().above(el.bottomMiddleOuter, '200.1px')
       .is().leftOf(el.midRightOuter, '200px')
       .is().rightOf(el.midLeftInner, '300px')

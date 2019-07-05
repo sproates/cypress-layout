@@ -178,4 +178,6 @@ cy.get(el.element)
 ```javascript
 cy.get(el.element)
   is().inside(el.otherElement, { top: '20px', bottom: : '20px', left: '20px', right: '20px' });
+  is().centred(el.otherElement, 'horizontally');
+  is().centred(el.otherElement, 'vertically');
 ```
