@@ -1,17 +1,9 @@
-describe('Getting started with cypress-layout', () => {
-  it('should contain at least one story promo', () => {
-    cy.visit('http://localhost:7080/pidgin');
-    cy.get('section').within(() => {
-      cy.get('img')
-        .should('have.length.of.at.least', 1)
-        .should('be.visible');
-      cy.get('h3')
-        .should('have.length.of.at.least', 1)
-        .should('be.visible')
-        // .find('a')
-        // .should('have.attr', 'href')
-        .is()
-        .rightOf('img', '8px');
-    });
-  });
+it('uses a custom chai helper', () => {
+  cy.viewport(1680, 1050);
+  cy.visit('https://www.bbc.co.uk/news');
+  cy.get('#orb-modules > header').should('be.leftAligned', '#orb-modules');
+  cy.get('#nw-c-topstories-domestic').should('be.rightAligned', '#orb-modules > header');
+  cy.get('#nw-c-topstories-domestic').should('not.be.rightAligned', 'nav.nw-c-nav__wide');
+  cy.get('.nw-c-top-stories__primary-item').should('be.topAligned', 'div.nw-c-top-stories__secondary-item--1');
+  cy.get('.nw-c-top-stories__primary-item').should('be.bottomAligned', 'div.nw-c-top-stories__secondary-item--1');
 });
