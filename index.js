@@ -48,7 +48,7 @@ function removePadding(object, rect) {
 
 function getRect(subject) {
   let element;
-  if (typeof subject === 'string') { // the selector passed in to assertion
+  if (typeof subject === 'string') { // the selector passed in to thre assertion
     [element] = Cypress.$(subject);
   } else if (subject.constructor.name === 'jQuery') { // the element from cy.get() i.e this._obj
     [element] = subject;
@@ -181,11 +181,34 @@ const aligned = (_chai) => {
 };
 
 const contained = (_chai) => {
+  // Need to figure out how to handle case where no dimensions are not sent
   function inside(element, dimensions) {
     const rects = getRects(this._obj, element);
     const actual = getRectDiff(rects[0], rects[1], dimensions);
     this.assert(
-      deepEqual(actual, dimensions),
+      deepEqual(actual, dimensions)`expected ${this._obj.selector} to be #{exp} but got #{act}`,
+      `expected ${this._obj.selector} to not be #{exp} but got #{act}`,
+      dimensions,
+      actual,
+    );
+  }
+
+  function centred(element, axis = 'vertically') {
+    let dimensions;
+    let bounds;
+    const rects = getRects(this._obj, element);
+    if (axis === 'vertically') {
+      dimensions = { left: null, right: null };
+    } else if (axis === 'horizontally') {
+      dimensions = { top: null, bottom: null };
+    } else {
+      throw new Error(`Invalid axis: ${axis}, please use either 'vertical' or 'horizontal'`);
+    }
+
+    const { prop1, prop2 } = getRectDiff(rects[0], rects[1], dimensions);
+
+    this.assert(
+      prop1 === prop2 && inside(element),
       `expected ${this._obj.selector} to be #{exp} but got #{act}`,
       `expected ${this._obj.selector} to not be #{exp} but got #{act}`,
       dimensions,

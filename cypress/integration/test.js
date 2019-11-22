@@ -90,7 +90,20 @@ describe('Chai plugin', () => {
   });
 
   describe('Inside', () => {
-    it('checks whether on element inside another', () => {
+    it('checks whether an element inside another', () => {
+      cy.get('#root > header > div > div > a > svg')
+        .should('be.inside', '#root > header', {
+          top: 110, bottom: 72, left: 200,
+        })
+        .should('not.be.inside', '#root > header', {
+          top: 109, bottom: 71, left: 199,
+        })
+        .should('not.be.inside', '#root > header', {
+          top: 111, bottom: 73, left: 201,
+        });
+    });
+
+    it('checks whether an element inside another', () => {
       cy.get('#root > header > div > div > a > svg')
         .should('be.inside', '#root > header', {
           top: 110, bottom: 72, left: 200,
