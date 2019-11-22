@@ -1,5 +1,18 @@
 /* eslint-disable no-underscore-dangle */
+const deepEqual = require('deep-equal');
 require('./lib');
+
+function getRectDiff(minuend, subtrahend, expected) {
+  const difference = Object.assign({}, expected);
+  Object.keys(difference).forEach((key) => {
+    if ((key === 'bottom' && subtrahend[key] > 0) || (key === 'right' && subtrahend[key] > 0)) {
+      difference[key] = -(minuend[key] - subtrahend[key]);
+    } else {
+      difference[key] = minuend[key] - subtrahend[key];
+    }
+  });
+  return difference;
+}
 
 // the rect returned by el.getBoundingClientRect() isn't writable, which is a
 // pain. This produces a facsimile of the rect that is.
@@ -24,10 +37,10 @@ function removePadding(object, rect) {
   const cs = getComputedStyle(object);
   dimensions.left += parseFloat(cs.paddingLeft);
   dimensions.right -= parseFloat(cs.paddingRight);
-  dimensions.top -= parseFloat(cs.paddingTop);
-  dimensions.bottom += parseFloat(cs.paddingBottom);
-  dimensions.width -= parseFloat(cs.paddingLeft) + parseFloat(cs.paddingRight);
-  dimensions.height -= parseFloat(cs.paddingTop) + parseFloat(cs.paddingBottom);
+  dimensions.top += parseFloat(cs.paddingTop);
+  dimensions.bottom -= parseFloat(cs.paddingBottom);
+  dimensions.width -= (parseFloat(cs.paddingLeft) + parseFloat(cs.paddingRight));
+  dimensions.height -= (parseFloat(cs.paddingTop) + parseFloat(cs.paddingBottom));
   dimensions.x += parseFloat(cs.paddingLeft);
   dimensions.y += parseFloat(cs.paddingTop);
   return dimensions;
@@ -35,12 +48,9 @@ function removePadding(object, rect) {
 
 function getRect(subject) {
   let element;
-
-  if (subject === '&document') {
-    element = Cypress.$(document).context.documentElement;
-  } else if (typeof subject === 'string') { // the selector passed in to assertion
+  if (typeof subject === 'string') { // the selector passed in to assertion
     [element] = Cypress.$(subject);
-  } else if (typeof subject === 'object') { // the element from cy.get() i.e this._obj
+  } else if (subject.constructor.name === 'jQuery') { // the element from cy.get() i.e this._obj
     [element] = subject;
   } else {
     element = null; // something unknown
@@ -58,43 +68,65 @@ function getRects(first, second) {
   return [actual, expected];
 }
 
+function getActual(calc) {
+  if (Cypress.config('roundLayoutValues')) return Math.round(calc());
+  return calc();
+}
+
 const positioned = (_chai) => {
   function leftOf(element, measure) {
     const rects = getRects(this._obj, element);
-    const calc = () => -(rects[0].right - rects[1].left);
+    const actual = getActual(() => -(rects[0].right - rects[1].left));
     this.assert(
-      calc() === measure,
+      actual === measure,
       `expected ${this._obj.selector} to be left of ${element} by #{exp} but got #{act}`,
       `expected ${this._obj.selector} to not be left of ${element} by #{exp} but got #{act}`,
       measure,
-      calc(),
+      actual,
     );
   }
 
   function rightOf(element, measure) {
     const rects = getRects(this._obj, element);
-    const calc = () => rects[0].left - rects[1].right;
+    const actual = getActual(() => rects[0].left - rects[1].right);
     this.assert(
-      calc() === measure,
+      actual === measure,
       `expected ${this._obj.selector} to be right of ${element} by #{exp} but got #{act}`,
       `expected ${this._obj.selector} to not be right of ${element} by #{exp} but got #{act}`,
       measure,
-      calc(),
+      actual,
     );
   }
 
   const { Assertion } = chai;
   Assertion.overwriteMethod('above', _super => function assertAbove(element, measure) {
     const obj = this._obj;
-    if (typeof obj === 'object') {
+    if (obj.constructor.name === 'jQuery') {
       const rects = getRects(obj, element);
-      const calc = () => rects[0].bottom - rects[1].top;
+      const actual = getActual(() => -(rects[0].bottom - rects[1].top));
       this.assert(
-        calc() === measure,
+        actual === measure,
         `expected ${this._obj.selector} to be above ${element} by #{exp} but got #{act}`,
         `expected ${this._obj.selector} to not be above ${element} by #{exp} but got #{act}`,
         measure,
-        calc(),
+        actual,
+      );
+    } else {
+      _super.apply(this, arguments);
+    }
+  });
+
+  Assertion.overwriteMethod('below', _super => function assertBelow(element, measure) {
+    const obj = this._obj;
+    if (obj.constructor.name === 'jQuery') {
+      const rects = getRects(obj, element);
+      const actual = getActual(() => rects[0].top - rects[1].bottom);
+      this.assert(
+        actual === measure,
+        `expected ${this._obj.selector} to be above ${element} by #{exp} but got #{act}`,
+        `expected ${this._obj.selector} to not be above ${element} by #{exp} but got #{act}`,
+        measure,
+        actual,
       );
     } else {
       _super.apply(this, arguments);
@@ -103,48 +135,42 @@ const positioned = (_chai) => {
 
   _chai.Assertion.addMethod('leftOf', leftOf);
   _chai.Assertion.addMethod('rightOf', rightOf);
-  // _chai.Assertion.addMethod('above', above);
-  // _chai.Assertion.addMethod('below', below);
 };
 
 const aligned = (_chai) => {
   function leftAligned(element) {
-    const rects = getRects(element, this._obj);
+    const rects = getRects(this._obj, element);
     this.assert(
       rects[0].left === rects[1].left,
       `expected ${this._obj.selector} to be left aligned with ${element}`,
       `expected ${this._obj.selector} to not left aligned with ${element}`,
-      this._obj,
     );
   }
 
   function rightAligned(element) {
-    const rects = getRects(element, this._obj);
+    const rects = getRects(this._obj, element);
     this.assert(
       rects[0].right === rects[1].right,
       `expected ${this._obj.selector} to be right aligned with ${element}`,
       `expected ${this._obj.selector} to not be right aligned with ${element}`,
-      this._obj,
     );
   }
 
   function topAligned(element) {
-    const rects = getRects(element, this._obj);
+    const rects = getRects(this._obj, element);
     this.assert(
       rects[0].top === rects[1].top,
       `expected ${this._obj.selector} to be top aligned with ${element}`,
       `expected ${this._obj.selector} to not be top aligned with ${element}`,
-      this._obj,
     );
   }
 
   function bottomAligned(element) {
-    const rects = getRects(element, this._obj);
+    const rects = getRects(this._obj, element);
     this.assert(
       rects[0].bottom === rects[1].bottom,
       `expected ${this._obj.selector} to be bottom aligned with ${element}`,
       `expected ${this._obj.selector} to not be bottom aligned with ${element}`,
-      this._obj,
     );
   }
 
@@ -154,5 +180,78 @@ const aligned = (_chai) => {
   _chai.Assertion.addMethod('bottomAligned', bottomAligned);
 };
 
+const contained = (_chai) => {
+  function inside(element, dimensions) {
+    const rects = getRects(this._obj, element);
+    const actual = getRectDiff(rects[0], rects[1], dimensions);
+    this.assert(
+      deepEqual(actual, dimensions),
+      `expected ${this._obj.selector} to be #{exp} but got #{act}`,
+      `expected ${this._obj.selector} to not be #{exp} but got #{act}`,
+      dimensions,
+      actual,
+    );
+  }
+
+  _chai.Assertion.addMethod('inside', inside);
+};
+
+const dimensions = (_chai) => {
+  function width(measure) {
+    const rect = getRect(this._obj);
+    const actual = getActual(() => rect.width);
+    this.assert(
+      actual === measure,
+      `expected ${this._obj.selector} to be #{exp} wide but got #{act}`,
+      `expected ${this._obj.selector} to not be #{exp} wide but got #{act}`,
+      measure,
+      actual,
+    );
+  }
+
+  function widthOf(element, measure) {
+    const rects = getRects(this._obj, element);
+    const actual = getActual(() => (rects[0].width / rects[1].width) * 100);
+    this.assert(
+      actual === measure,
+      `expected ${this._obj.selector} to be #{exp} of ${element} but got #{act}`,
+      `expected ${this._obj.selector} to not be #{exp} of ${element} but got #{act}`,
+      measure,
+      actual,
+    );
+  }
+
+  function height(measure) {
+    const rect = getRect(this._obj);
+    const actual = getActual(() => rect.height);
+    this.assert(
+      actual === measure,
+      `expected ${this._obj.selector} to be #{exp} high but got #{act}`,
+      `expected ${this._obj.selector} to not be #{exp} high but got #{act}`,
+      measure,
+      actual,
+    );
+  }
+
+  function heightOf(element, measure) {
+    const rects = getRects(this._obj, element);
+    const actual = getActual(() => (rects[0].height / rects[1].height) * 100);
+    this.assert(
+      actual === measure,
+      `expected ${this._obj.selector} to be #{exp} of ${element} but got #{act}`,
+      `expected ${this._obj.selector} to not be #{exp} of ${element} but got #{act}`,
+      measure,
+      actual,
+    );
+  }
+
+  _chai.Assertion.addMethod('width', width);
+  _chai.Assertion.addMethod('widthOf', widthOf);
+  _chai.Assertion.addMethod('height', height);
+  _chai.Assertion.addMethod('heightOf', heightOf);
+};
+
 chai.use(aligned);
 chai.use(positioned);
+chai.use(dimensions);
+chai.use(contained);
