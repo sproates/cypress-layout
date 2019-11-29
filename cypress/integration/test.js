@@ -95,25 +95,25 @@ describe('Chai plugin', () => {
         .should('be.inside', '#root > header', {
           top: 110, bottom: 72, left: 200,
         })
+        .should('be.inside', '#root > header')
         .should('not.be.inside', '#root > header', {
           top: 109, bottom: 71, left: 199,
         })
         .should('not.be.inside', '#root > header', {
           top: 111, bottom: 73, left: 201,
-        });
+        })
+        .should('not.be.inside', 'main');
+      // .should('not.be.inside', 'mainr'); fails. Why?
     });
 
-    it('checks whether an element inside another', () => {
-      cy.get('#root > header > div > div > a > svg')
-        .should('be.inside', '#root > header', {
-          top: 110, bottom: 72, left: 200,
-        })
-        .should('not.be.inside', '#root > header', {
-          top: 109, bottom: 71, left: 199,
-        })
-        .should('not.be.inside', '#root > header', {
-          top: 111, bottom: 73, left: 201,
-        });
+    it('checks whether an element is centred inside another', () => {
+      cy.get('#root > main > div > div').should('be.centred', '#root > main');
+      cy.get('img.StyledImg-sc-7vx2mr-0.hIxkbt').should('be.centred', '#root > main');
     });
   });
+  // describe('tags', () => {
+  //   it.only('...', () => {
+  //     cy.visit('https://www.tiktok.com/tag/cats?lang=en');
+  //   });
+  // });
 });

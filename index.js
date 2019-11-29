@@ -3,9 +3,16 @@ const deepEqual = require('deep-equal');
 require('./lib');
 
 function getRectDiff(minuend, subtrahend, expected) {
-  const difference = Object.assign({}, expected);
+  let difference;
+  if (expected === undefined) {
+    difference = {
+      top: null, right: null, bottom: null, left: null,
+    };
+  } else {
+    difference = Object.assign({}, expected);
+  }
   Object.keys(difference).forEach((key) => {
-    if ((key === 'bottom' && subtrahend[key] > 0) || (key === 'right' && subtrahend[key] > 0)) {
+    if (key === 'bottom' || key === 'right') {
       difference[key] = -(minuend[key] - subtrahend[key]);
     } else {
       difference[key] = minuend[key] - subtrahend[key];
@@ -181,42 +188,58 @@ const aligned = (_chai) => {
 };
 
 const contained = (_chai) => {
-  // Need to figure out how to handle case where no dimensions are not sent
+  const { Assertion } = chai;
+
   function inside(element, dimensions) {
     const rects = getRects(this._obj, element);
     const actual = getRectDiff(rects[0], rects[1], dimensions);
-    this.assert(
-      deepEqual(actual, dimensions)`expected ${this._obj.selector} to be #{exp} but got #{act}`,
-      `expected ${this._obj.selector} to not be #{exp} but got #{act}`,
-      dimensions,
-      actual,
-    );
+    if (dimensions === undefined) {
+      // If the expected dimensions are missing, we just want to chek whether
+      // the subject is inside the element specified
+      this.assert(
+        Object.values(actual).every(x => x >= 0),
+        `expected ${this._obj.selector} to be inside #{exp} but got #{act}`,
+        `expected ${this._obj.selector} to not be inside #{exp} but got #{act}`,
+        actual,
+        element,
+      );
+    } else {
+      this.assert(
+        deepEqual(actual, dimensions),
+        `expected ${this._obj.selector} to be #{exp} but got #{act}`,
+        `expected ${this._obj.selector} to not be #{exp} but got #{act}`,
+        dimensions,
+        actual,
+      );
+    }
   }
 
   function centred(element, axis = 'vertically') {
     let dimensions;
-    let bounds;
     const rects = getRects(this._obj, element);
     if (axis === 'vertically') {
       dimensions = { left: null, right: null };
     } else if (axis === 'horizontally') {
       dimensions = { top: null, bottom: null };
     } else {
-      throw new Error(`Invalid axis: ${axis}, please use either 'vertical' or 'horizontal'`);
+      throw new Error(`invalid axis: ${axis}, please use either 'vertical' or 'horizontal'`);
     }
+    const actual = getRectDiff(rects[0], rects[1], dimensions);
+    const [prop1, prop2] = Object.values(actual);
 
-    const { prop1, prop2 } = getRectDiff(rects[0], rects[1], dimensions);
+    new Assertion(this._obj).to.be.inside(element);
 
     this.assert(
-      prop1 === prop2 && inside(element),
-      `expected ${this._obj.selector} to be #{exp} but got #{act}`,
-      `expected ${this._obj.selector} to not be #{exp} but got #{act}`,
-      dimensions,
+      prop1 === prop2,
+      `expected ${this._obj.selector} to be centred within #{exp} but got #{act}`,
+      `expected ${this._obj.selector} to not be centred within #{exp} but got #{act}`,
+      element,
       actual,
     );
   }
 
   _chai.Assertion.addMethod('inside', inside);
+  _chai.Assertion.addMethod('centred', centred);
 };
 
 const dimensions = (_chai) => {
