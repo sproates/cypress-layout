@@ -108,12 +108,7 @@ describe('Chai plugin', () => {
 
     it('checks whether an element is centred inside another', () => {
       cy.get('#root > main > div > div').should('be.centred', '#root > main');
-      cy.get('img.StyledImg-sc-7vx2mr-0.hIxkbt').should('be.centred', '#root > main');
+      cy.get('img.StyledImg-sc-7vx2mr-0.hIxkbt').should('not.be.centred', '#root > main');
     });
   });
-  // describe('tags', () => {
-  //   it.only('...', () => {
-  //     cy.visit('https://www.tiktok.com/tag/cats?lang=en');
-  //   });
-  // });
 });
