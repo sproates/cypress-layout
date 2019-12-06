@@ -72,9 +72,9 @@ describe('cypress-layout', () => {
 
     it('checks elements have relative widths', () => {
       cy.get('header')
-        .should('be.widthOf', 'body', 100)
-        .should('not.be.widthOf', 'body', 99)
-        .should('not.be.widthOf', 'body', 101);
+        .should('be.widthOf', 'body', 1)
+        .should('not.be.widthOf', 'body', 0.99)
+        .should('not.be.widthOf', 'body', 1.1);
     });
 
     it('checks the height of elements', () => {
