@@ -76,13 +76,13 @@ The assertions should be used like any other [Cypress Assertion](https://docs.cy
 
 #### Alignment
 
-```javascript
-cy.get('element-selector')
-  .should('be.topAligned', 'comparison-selector') // as per the Getting Started section. Pass the assertion and then the 
-  .and('be.rightAligned', 'comparison-selector')
-  .and('be.bottomAligned', 'comparison-selector')
-  .and('be.bottomAligned', 'comparison-selector')
-```
+Assertion | Params | Example
+--- | --- | ---
+topAligned | `{string} element-selector` | `.should('be.topAligned', 'selector')`
+rightAligned | `{string} element-selector` | `.should('be.rightAligned', 'selector')`
+bottomAligned | `{string} element-selector` | `.should('be.bottomAligned', 'selector')`
+lwftAligned | `{string} element-selector` | `.should('be.leftAligned', 'selector')`
+
 
 #### Position
 ```javascript
