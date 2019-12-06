@@ -103,13 +103,25 @@ Assertion | Params | Example
 --- | --- | ---
 `width` | `{int} pixels` | `.should('have.width', 100)`
 `height` | `{int} pixels` | `.should('have.height', 100)`
-`widthOf` | `{string} element-selector, {int} pixels` | `.should('have.widthOf', 'selector', 1) // 100% width`
-`heightOf`| `{string} element-selector, {int} pixels` | `.should('have.heightOf', 'selector', 0.5) // 50% height`
+`widthOf` | `{string} element-selector, {float} percent` | `.should('have.widthOf', 'selector', 1) // 100% width`
+`heightOf`| `{string} element-selector, {float} percent` | `.should('have.heightOf', 'selector', 0.5) // 50% height`
 
+#### Containing
+
+There are two *versions* of `inside`. The first accepts just a selector for an element, in this case the assertion is just to verify that the element is *inside* the other **regardless of the dimensions**.
+
+The second accepts an object that can contain one to four measurements: `top`, `right`, `bottom` or `left`. For example, if you wanted to test that your logo image was inside the header element with 10px clearance at the top and bottom, and 20px from the left hand side you would supply e.g. `{ top: 10, bottom: 10, left: 20 }`; you can supply them in any order.
+
+Assertion | Params | Example
+--- | --- | ---
+`inside` | `{string} elemet-selector` | `.should('have.height', 100) // just tests an element is containe by another`
+`inside` | `{string} element-selector, {object} { top: {int}, right: {int}, bottom: {int}, left: {int} }` | `.should('be.inside', 'selector', { top: 10, right: 10, bottom: 10, left: 10 })` 
+`widthOf` | `{string} element-selector, {float} percent` | `.should('have.widthOf', 'selector', 1) // 100% width`
+`heightOf`| `{string} element-selector, {float} percent` | `.should('have.heightOf', 'selector', 0.5) // 50% height`
 
 ### Just a head's up!
 
-If you want to work with elements that are added to page after it loads you need to `cy.get` it before attempting any layout checks. A good example of this is the cookie banner on the article page https://www.bbc.co.uk/news/articles/ce9992y0reyo, the following test will fail:
+If you want to work with elements that are added *post-loaded* ( i.e. aded to page **after** it loads) you need to `cy.get` it before attempting any layout checks. A good example of this is the cookie banner on the article page https://www.bbc.co.uk/news/articles/ce9992y0reyo, the following test will fail:
 
 ```javascript
 it('tests the header', () => {
@@ -126,55 +138,4 @@ it('tests the header', () => {
   cy.get(el.header)
     .isBelow(el.cookieBanner, '0px')
 });
-```
-
-#### The '&document'
-
-The `&document` is a special element, it represents the boundaries of the page. It's useful, for example, when testing that the header is the very first element on the page and the footer is the very last.
-
-## The full list of commands
-
-Below is a list of the commands you can use.
-
-### is(), isnot(), has(), hasnot()
-
-You need to prefix every layout command with either `is()`, `isnot()`, `has()` or `hasnot()`.
-
-### Alignment
-
-```javascript
-cy.get(el.element)
-  .is().leftAlignedWith(el.otherElement);
-  .is().rightAlignedWith(el.otherElement);
-  .is().topAlignedWith(el.otherElement);
-  .is().bottomAlignedWith(el.otherElement);
-```
-
-### Positioning
-
-```javascript
-cy.get(el.element)
-  .is().above(el.otherElement, '20px');
-  .is().below(el.otherElement, '20px');
-  .is().leftOf(el.otherElement, '20px');
-  .is().rightOf(el.otherElement, '20px');
-```
-
-### Size
-
-```javascript
-cy.get(el.element)
-  .has().widthOf('20px');
-  .has().widthOf('50%', el.otherElement);
-  .has().heightOf('20px');
-  .has().heightOf('50%', el.otherElement);
-```
-
-### Inside
-
-```javascript
-cy.get(el.element)
-  is().inside(el.otherElement, { top: '20px', bottom: : '20px', left: '20px', right: '20px' });
-  is().centred(el.otherElement, 'horizontally');
-  is().centred(el.otherElement, 'vertically');
 ```
