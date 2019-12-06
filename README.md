@@ -121,11 +121,11 @@ Assertion | Params | Example
 `centred` | `{string} element-selector` | `.should('be.centred', 'selector')`
 `centred` | `{string} element-selector, {string} axis` | `.should('be.centred', 'selector', 'horizontally')`
 
-A couple of notes on `centred`. The assertion accepts an optional parameter `axis`, this is either 'vertically' or 'horizontally' - the assertion defaults to 'vertically'. The assertion also checks that the element is fully ***inside*** the one within which it should be centred - if it is not inside your test will fail and the error will be that the element is not inside the other (rather than not being centred)
+A couple of notes on `centred`. The assertion accepts an optional parameter `axis`, this is either 'vertically' or 'horizontally' - the assertion defaults to 'vertically'. The assertion also checks that the element is fully ***inside*** the one within which it should be centred - if it is not inside your test will fail with the error will be that the element is not inside the other (rather than not being centred)
 
 ### Just a head's up!
 
-If you want to work with elements that are added *post-loaded* ( i.e. aded to page **after** it loads) you need to `cy.get` it before attempting any layout checks. A good example of this is the cookie banner on the article page https://www.bbc.co.uk/news/articles/ce9992y0reyo, the following test will fail:
+If you want to work with elements that are added *post-loaded* ( i.e. added to page **after** it loads) you need to `cy.get` it before attempting any layout checks. A good example of this is the cookie banner on the article page https://www.bbc.co.uk/news/articles/ce9992y0reyo, the following test will fail:
 
 ```javascript
 it('tests the header', () => {
