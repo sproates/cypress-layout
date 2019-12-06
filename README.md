@@ -11,7 +11,7 @@ You only need to have [Cypress.io](https://github.com/cypress-io/cypress) instal
 
 ### Installing
 
-In your command line interface (CLI) navigate to your project and run:
+In your command line interface (CLI) navigate to your project folder and run:
 
 ```
 npm install cypress-layout
@@ -22,45 +22,54 @@ Once installed update `cypress/support/index.js` file to include:
 import 'cypress-layout'
 ```
 
-Optionally, but recommended, you can add `config.roundLayoutValues = true` to `Cypress/plugins/index.js`:
+Optionally, but recommended, you can add the following config values `config.roundLayoutValues = true` and `config.removePadding = true;` to `Cypress/plugins/index.js`:
 
 ```javascript
 module.exports = (on, config) => {
   // `on` is used to hook into various events Cypress emits
   // `config` is the resolved Cypress config
   config.roundLayoutValues = true
+  config.removePadding = true;
   return config
 }
 ```
-
-Dealing with fractions of pixels is like playing on Hard mode. This setting rounds all `px` values to the nearest whole number.
+`roundLayoutValues` rounds all `px` and `%` values to the nearest whole number. The second config item `removePadding` informs the plugin whether you would like to calculate
 
 ### Getting started
 
 The code snippets and examples relate to a BBC News article (e.g. https://www.bbc.co.uk/news/articles/c8xxl4l3dzeo).
 
-To get started paste the following into a new file in `cypress/integration`:
+To get started paste the following into a new file in `cypress/integration` and run it:
 
 ```javascript
-describe('Getting started with cypress-layout', () => {
-  it('gets started', () => {
+describe('cypress-layout', () => {
+  it('asserts left alignment', () => {
+    cy.visit('https://www.bbc.com/pidgin');
     cy.viewport(1680, 1050);
-    cy.visit('https://www.bbc.co.uk/news/articles/c8xxl4l3dzeo');
-    cy.get('figure img').is().leftAlignedWith('h1');
+    cy.get('nav > div > ul').should('be.leftAligned', '#root > header > div > div')
   });
 });
 ```
 
-### The commands
+### The assertions
 
-All the commands that check positioning should be 'chained' from a `cy.get` command.
+The assertions should be used like any other [Cypress Assertion](https://docs.cypress.io/guides/core-concepts/introduction-to-cypress.html#Assertions).
+
+#### Alignment
 
 ```javascript
-cy.get(el.headline).is().below(el.header, '0px');
+cy.get('element-selector')
+  .should('be.topAligned', 'comparison-selector')
+  .and('be.rightAligned', 'comparison-selector')
+  .and('be.bottomAligned', 'comparison-selector')
+  .and('be.bottomAligned', 'comparison-selector')
 ```
 
-Commands can be chained together, for convenience: 
-
+#### Position
+```javascript
+cy.get('element-selector')
+  .should('be.leftOf', 'comparison-selector', pixels)
+```
 ```javascript
 cy.get(el.headline).is().below(el.header, '0px').is().leftAlignedWith(el.headline);
 
@@ -102,34 +111,6 @@ it('tests the header', () => {
     .isBelow(el.cookieBanner, '0px')
 });
 ```
-
-### Selectors
-
-To help make the tests more readable you can define the selectors we want to use in a separate object outside the tests themselves. This means that instead of seeing `#root > main > div > div:nth-child(2) > time` in the test we see something ike `el.timestamp`. To get started, paste the following into the new file in `cypress/support/` e.g. `cypress/support/elements.js`:
-
-```javascript
-export const el = {
-  document: '&document'
-}
-```
-
-We'll come to the `&document` object later on. To add a new element to use in a test you need to enter a new line in the format `elementName: 'css selector as a string',` (don't forget the comma).
-
-Here's an example of adding the first few elements we want to check:
-
-```javascript
-// I'll admit the benefits of these are marginal at best - but you get the idea!
-export const el = {
-  document: '&document',
-  header: 'header',
-  headline: 'h1',
-  img: 'figure img',
-}
-```
-
-The first word in this declaration is `export`. This makes it available to be picked up by other files. Every test file we create in the `integration/'` folder should start with `import { el } from '../support/elements'` on the first line. This makes the names to use throughout our tests consistent.
-
-If you want to use a different file, just create the file with a `.js` extension and change the `import` statement to be `import { el } from '../support/[YOUR-FILENAME-HERE]'`.
 
 #### The '&document'
 
