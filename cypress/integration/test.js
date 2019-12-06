@@ -1,7 +1,10 @@
-describe('Chai plugin', () => {
+describe('cypress-layout', () => {
+  before(() => {
+    cy.visit('https://www.bbc.com/pidgin');
+  });
+
   beforeEach(() => {
     cy.viewport(1680, 1050);
-    cy.visit('https://www.bbc.com/pidgin');
   });
 
   describe('Alignment', () => {
