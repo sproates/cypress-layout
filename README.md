@@ -116,7 +116,7 @@ The second accepts an object that can contain one to four properties: `top`, `ri
 
 Assertion | Params | Example
 --- | --- | ---
-`inside` | `{string} element-selector` | `.should('have.height', 100)`
+`inside` | `{string} element-selector` | `.should('be.inside', 100)`
 `inside` | `{string} element-selector, {object} { top: {int}, right: {int}, bottom: {int}, left: {int} }` | `.should('be.inside', 'selector', { top: 10, right: 10, bottom: 10, left: 10 })` 
 `centred` | `{string} element-selector` | `.should('be.centred', 'selector')`
 `centred` | `{string} element-selector, {string} axis` | `.should('be.centred', 'selector', 'horizontally')`
