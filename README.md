@@ -102,9 +102,9 @@ Test the dimensions of elements. You can check either the absolute dimensions us
 Assertion | Params | Example
 --- | --- | ---
 `width` | `{int} pixels` | `.should('have.width', 100)`
-`height` | `{int} pixels` | `.should('be.be.leftOf', 'selector', 100)`
-`widthOf` | `{string} element-selector, {int} pixels` | `.should('be.above', 'selector', 16)`
-`heightOf`| `{string} element-selector, {int} pixels` | `.should('be.below', 'selector', 16)`
+`height` | `{int} pixels` | `.should('have.height', 100)`
+`widthOf` | `{string} element-selector, {int} pixels` | `.should('have.widthOf', 'selector', 1) // 100% width`
+`heightOf`| `{string} element-selector, {int} pixels` | `.should('have.heightOf', 'selector', 0.5) // 50% height`
 
 
 ### Just a head's up!
