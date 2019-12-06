@@ -108,16 +108,20 @@ Assertion | Params | Example
 
 #### Containing
 
-There are two *versions* of `inside`. The first accepts just a selector for an element, in this case the assertion is just to verify that the element is *inside* the other **regardless of the dimensions**.
+There are two *versions* of `inside`.
 
-The second accepts an object that can contain one to four measurements: `top`, `right`, `bottom` or `left`. For example, if you wanted to test that your logo image was inside the header element with 10px clearance at the top and bottom, and 20px from the left hand side you would supply e.g. `{ top: 10, bottom: 10, left: 20 }`; you can supply them in any order.
+The first accepts just a selector for an element, in this case the assertion is just to verify that the element is *inside* the other **regardless of the dimensions**.
+
+The second accepts an object that can contain one to four properties: `top`, `right`, `bottom` and/or `left`. For example, if you wanted to test that your logo image was inside the header element with 10px clearance at the top and bottom, and 20px from the left handside you would supply e.g. `{ top: 10, bottom: 10, left: 20 }`; you can supply them in any order.
 
 Assertion | Params | Example
 --- | --- | ---
-`inside` | `{string} elemet-selector` | `.should('have.height', 100) // just tests an element is containe by another`
+`inside` | `{string} element-selector` | `.should('have.height', 100)`
 `inside` | `{string} element-selector, {object} { top: {int}, right: {int}, bottom: {int}, left: {int} }` | `.should('be.inside', 'selector', { top: 10, right: 10, bottom: 10, left: 10 })` 
-`widthOf` | `{string} element-selector, {float} percent` | `.should('have.widthOf', 'selector', 1) // 100% width`
-`heightOf`| `{string} element-selector, {float} percent` | `.should('have.heightOf', 'selector', 0.5) // 50% height`
+`centred` | `{string} element-selector` | `.should('be.centred', 'selector')`
+`centred` | `{string} element-selector, {string} axis` | `.should('be.centred', 'selector', 'horizontally')`
+
+A couple of notes on `centred`. The assertion accepts an optional parameter `axis`, this is either 'vertically' or 'horizontally' - the assertion defaults to 'vertically'. The assertion also checks that the element is fully ***inside*** the one within which it should be centred - if it is not inside your test will fail and the error will be that the element is not inside the other (rather than not being centred)
 
 ### Just a head's up!
 
