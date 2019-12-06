@@ -7,14 +7,14 @@ This is very much at an alpha stage, there may be bugs I have not spotted and ga
 
 ### Prerequisites
 
-You only need to have [Cypress.io](https://github.com/cypress-io/cypress) installed.
+You need to have [Cypress.io](https://github.com/cypress-io/cypress) installed.
 
 ### Installing
 
 In your command line interface (CLI) navigate to your project folder and run:
 
 ```
-npm install cypress-layout
+npm install @david-boydell/cypress-layout
 ```
 
 Once installed update `cypress/support/index.js` file to include:
@@ -37,19 +37,38 @@ module.exports = (on, config) => {
 
 ### Getting started
 
-The code snippets and examples relate to a BBC News article (e.g. https://www.bbc.co.uk/news/articles/c8xxl4l3dzeo).
+The code snippets and examples relate to a BBC News World Service page (e.g. https://www.bbc.com/pidgin).
 
 To get started paste the following into a new file in `cypress/integration` and run it:
 
 ```javascript
-describe('cypress-layout', () => {
+describe('Getting started with cypress-layout', () => {
   it('asserts left alignment', () => {
-    cy.visit('https://www.bbc.com/pidgin');
-    cy.viewport(1680, 1050);
-    cy.get('nav > div > ul').should('be.leftAligned', '#root > header > div > div')
+      cy.visit('https://www.bbc.com/pidgin');
+      cy.viewport(1680, 1050);
+      cy.get('nav').should('be.leftAligned', 'main');
   });
 });
 ```
+
+Let's add something that will fail, add the following line under `cy.get('nav')...`
+
+```javascript
+cy.get('nav').should('be.leftAligned', '#root > main > div > div > section:nth-child(1)');
+```
+If you run that again you should see the following error:
+
+> CypressError: Timed out retrying: expected nav to be left aligned with #root > main > div > div > section:nth-child(1)
+
+You may also have noticed that the test took longer. Cypress will retest the assertion until either the test passes or the timeout is reached.
+
+Let's change the assertion so that our test all pass, update the line to be:
+
+```javascript
+cy.get('nav').should('not.be.leftAligned', '#root > main > div > div > section:nth-child(1)');
+```
+
+Following is a list of all the available layout assertions. 
 
 ### The assertions
 
@@ -59,7 +78,7 @@ The assertions should be used like any other [Cypress Assertion](https://docs.cy
 
 ```javascript
 cy.get('element-selector')
-  .should('be.topAligned', 'comparison-selector')
+  .should('be.topAligned', 'comparison-selector') // as per the Getting Started section. Pass the assertion and then the 
   .and('be.rightAligned', 'comparison-selector')
   .and('be.bottomAligned', 'comparison-selector')
   .and('be.bottomAligned', 'comparison-selector')
