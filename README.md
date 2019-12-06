@@ -97,7 +97,7 @@ Assertion | Params | Example
 
 #### Proportions
 
-Test the dimensions of elements. You can check either the absolute dimensions using e.g. `width` or test the proportions relative to *another* element
+Test the dimensions of elements. You can check either the absolute dimensions using e.g. `width` or test the proportions relative to *another* element using e.g. `widthOf`
 
 Assertion | Params | Example
 --- | --- | ---
