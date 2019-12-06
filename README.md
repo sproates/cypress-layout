@@ -37,8 +37,6 @@ module.exports = (on, config) => {
 
 ### Getting started
 
-The code snippets and examples relate to a BBC News World Service page (e.g. https://www.bbc.com/pidgin).
-
 To get started paste the following into a new file in `cypress/integration` and run it:
 
 ```javascript
@@ -76,39 +74,38 @@ The assertions should be used like any other [Cypress Assertion](https://docs.cy
 
 #### Alignment
 
+Tests alignment with another element.
+
 Assertion | Params | Example
 --- | --- | ---
-topAligned | `{string} element-selector` | `.should('be.topAligned', 'selector')`
-rightAligned | `{string} element-selector` | `.should('be.rightAligned', 'selector')`
-bottomAligned | `{string} element-selector` | `.should('be.bottomAligned', 'selector')`
-lwftAligned | `{string} element-selector` | `.should('be.leftAligned', 'selector')`
+`topAligned` | `{string} element-selector` | `.should('be.topAligned', 'selector')`
+`rightAligned` | `{string} element-selector` | `.should('be.rightAligned', 'selector')`
+`bottomAligned` | `{string} element-selector` | `.should('be.bottomAligned', 'selector')`
+`leftAligned` | `{string} element-selector` | `.should('be.leftAligned', 'selector')`
 
 
 #### Position
-```javascript
-cy.get('element-selector')
-  .should('be.leftOf', 'comparison-selector', pixels)
-```
-```javascript
-cy.get(el.headline).is().below(el.header, '0px').is().leftAlignedWith(el.headline);
 
-// Or, for better readability you could do the following
+Tests whether an element is positioned relative to another element.
 
-cy.get(el.headline)
-  .is().below(el.header, '0px')
-  .is().leftAlignedWith(el.headline);
-```
+Assertion | Params | Example
+--- | --- | ---
+`rightOf` | `{string} element-selector, {int} pixels` | `.should('be.rightOf', 'selector', 16)`
+`leftOf` | `{string} element-selector, {int} pixels` | `.should('be.be.leftOf', 'selector', 16)`
+`above` | `{string} element-selector, {int} pixels` | `.should('be.above', 'selector', 16)`
+`below`| `{string} element-selector, {int} pixels` | `.should('be.below', 'selector', 16)`
 
-You can also chain normal Cypress commands from them:
+#### Proportions
 
-```javascript
-cy.get(el.headline)
-  .is().below(el.header, '0px')
-  .is().leftAlignedWith(el.headline)
-  .should('contain', '\'Breech\' baby scan would save lives');
-```
+Test the dimensions of elements. You can check either the absolute dimensions using e.g. `width` or test the proportions relative to *another* element
 
-And that's basically it. Below you can find a reference of all the commands available to you.
+Assertion | Params | Example
+--- | --- | ---
+`width` | `{int} pixels` | `.should('have.width', 100)`
+`height` | `{int} pixels` | `.should('be.be.leftOf', 'selector', 100)`
+`widthOf` | `{string} element-selector, {int} pixels` | `.should('be.above', 'selector', 16)`
+`heightOf`| `{string} element-selector, {int} pixels` | `.should('be.below', 'selector', 16)`
+
 
 ### Just a head's up!
 
