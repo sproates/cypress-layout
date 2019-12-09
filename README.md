@@ -17,7 +17,7 @@ npm install @david-boydell/cypress-layout
 
 Once installed update `cypress/support/index.js` file to include:
 ```javascript
-import 'cypress-layout'
+import '@david-boydell/cypress-layout'
 ```
 
 Optionally, but recommended, you can add the following config values `config.roundLayoutValues = true` and `config.removePadding = true;` to `Cypress/plugins/index.js`:
