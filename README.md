@@ -1,7 +1,5 @@
 # cypress-layout
-Verifies the position and dimensions of HTML elements on your page, for use with cypress.io.
-
-You do this by describing the HTML elements relative to other elements on the page, or even the page itself. This builds up an overall on your page have not changed.
+Largely inspired by the [Galen Framework](http://galenframework.com/), `cypress-layout` verifies the position and dimensions of elements on your page, for use with cypress.io.
 
 This is very much at an alpha stage, there may be bugs I have not spotted and gaps I have not forseen; any feedback is most welcome so either get me on slack or you are also more than welcome to raise an issue here.
 
