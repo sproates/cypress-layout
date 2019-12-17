@@ -31,7 +31,7 @@ module.exports = (on, config) => {
   return config
 }
 ```
-`roundLayoutValues` rounds all `px` and `%` values to the nearest whole number. The second config item `removePadding` informs the plugin whether it should include the padding when computing the size and position of elements - by default the padding contributes to the size (see this [MDN article on getBoundingClientRect](https://developer.mozilla.org/en-US/docs/Web/API/Element/getBoundingClientRect)). It's recommended to st this to `true`.
+`roundLayoutValues` rounds all `px` and `%` values to the nearest whole number. The second config item `removePadding` informs the plugin whether it should include the padding when computing the size and position of elements - by default the padding contributes to the size (see this [MDN article on getBoundingClientRect](https://developer.mozilla.org/en-US/docs/Web/API/Element/getBoundingClientRect)). It's recommended to set this to `true`.
 
 ### Getting started
 
