@@ -1,7 +1,5 @@
 # cypress-layout
-Largely inspired by the [Galen Framework](http://galenframework.com/), `cypress-layout` verifies the position and dimensions of elements on your page, for use with cypress.io.
-
-This is very much at an alpha stage, there may be bugs I have not spotted and gaps I have not forseen; any feedback is most welcome so either get me on slack or you are also more than welcome to raise an issue here.
+Largely inspired by the [Galen Framework](http://galenframework.com/), `cypress-layout` enables you to automate the testing of your designs and layouts.
 
 ### Prerequisites
 
