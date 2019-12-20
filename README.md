@@ -1,5 +1,5 @@
 # cypress-layout
-Largely inspired by the [Galen Framework](http://galenframework.com/), `cypress-layout` enables you to automate the testing of your designs and layouts.
+Largely inspired by the [Galen Framework](http://galenframework.com/), `cypress-layout` enables you to automate the testing of your responsive layouts.
 
 ### Prerequisites
 
